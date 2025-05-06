@@ -13,7 +13,7 @@ This repository contains Python scripts for analyzing and visualizing high-frequ
 
 ### Key Functions
 - `plot_brain_map(coords, node_values, trial)`: Visualizes brain activity using 3D coordinates and node values.
-- `load_matching_files(encode_directory, recall_directory)`: Matches encoding and recall files based on filename patterns.
+- `load_matching_files(encode_directory, recall_directory)`: Loada the encoding word files corresponding only to the words that were recalled.
 - `find_coincidences(data_array, time_window)`: Detects temporal coincidences in event data.
 - `process_folder(args)`: Processes HFO data for a given folder and trial type.
 - `generate_sig_trial(trial, folder_path)`: Generates and visualizes significant trends for a particular trial type.
