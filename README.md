@@ -1,91 +1,83 @@
-# Co-hfo
+# HFO Processing Pipeline
 
-This repository contains Python scripts for analyzing and visualizing high-frequency oscillation (HFO) synchronization in brain activity data. It includes methods for data preprocessing, event analysis, and generating various visualizations such as brain maps and temporal correlation graphs.
+This repository contains scripts to process post-processed High-Frequency Oscillation (HFO) detections from sEEG data into trial-specific segments for further analysis. The detections are based on the [epycom](https://github.com/ICRC-BME/epycom/) library.
 
 ## Features
 
-- **Brain Map Visualization**: Plot and visualize brain activity using 3D coordinate data.
-- **Event Matching**: Identify matching files for encoding and recall trials based on common parts in filenames.
-- **Coincidence Detection**: Analyze temporal coincidences in event data across multiple channels.
-- **Error Plots**: Generate plots with mean and standard error to compare HFO synchronization across trials.
+- **Folder Creation**: Automatically generates folders based on HFO filenames.
+- **HFO Event Processing**: Splits HFO data into trial-specific segments using event timing data.
+- **Parallel Processing**: Leverages multiprocessing for faster execution.
+- **Modular Design**: Easy-to-reproduce and customizable scripts.
 
-## Code Overview
+## Input Data
 
-### Key Functions
-- `plot_brain_map(coords, node_values, trial)`: Visualizes brain activity using 3D coordinates and node values.
-- `load_matching_files(encode_directory, recall_directory)`: Loada the encoding word files corresponding only to the words that were recalled.
-- `find_coincidences(data_array, time_window)`: Detects temporal coincidences in event data.
-- `process_folder(args)`: Processes HFO data for a given folder and trial type.
-- `generate_sig_trial(trial, folder_path)`: Generates and visualizes significant trends for a particular trial type.
-
-### Main Trials
-- **ENCODE**
-- **RECALL**
-- **DISTRACTOR**
-- **COUNTDOWN**
-
-Each trial type is analyzed separately, and the results are plotted for comparison.
-
-## Installation
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/sathwikpg/co-hfo.git
-   cd co-hfo
-   ```
-
-2. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   **Note**: Ensure you have Python 3.8+ installed.
-
-## Usage
-
-To analyze data and generate visualizations for the trials:
-1. Define the path to your dataset in the `path_to_local` variable.
-2. Run the script for all trials:
-   ```bash
-   python main.py
-   ```
-3. The results, including visualizations, will be saved in the output directory.
+The pipeline requires:
+1. **HFO Detections**: Post-processed HFO detections in `.pkl` format for the entire task. These detections should be generated using the [epycom](https://github.com/ICRC-BME/epycom/) library.
+2. **Event Files**: Event timing data in `.pkl` format.
 
 ## Dependencies
 
-This project requires the following Python libraries:
-- `numpy`
+Install the required Python libraries:
 - `pandas`
+- `numpy`
+- `pickle`
 - `matplotlib`
 - `seaborn`
-- `nilearn`
-- `multiprocessing`
-- `pickle`
+- `argparse`
 
-## Data Requirements
+You can install the dependencies using pip:
+```bash
+pip install pandas numpy matplotlib seaborn
+```
 
-- The data should be organized into trial-specific folders (e.g., `ENCODE`, `RECALL`, etc.).
-- Each trial folder should contain event files in `.pkl` format.
-- Ensure that the filenames follow a consistent pattern to enable matching (e.g., `sub-word_start.pkl`).
+## Usage
 
-## Example Outputs
+1. **Folder Creation**:
+   Run the script to create folders for each HFO file:
+   ```bash
+   python create_folders.py --pkl_file /path/to/files_list.pkl --output_dir /path/to/output/folder
+   ```
 
-1. **Brain Map Visualization**
-   ![Example Brain Map](example_images/brain_map.png)
+2. **HFO Processing**:
+   Process sessions and split HFO detections into trials:
+   ```bash
+   python hfo_processing.py --hfo_dir /path/to/hfo_files \
+                            --event_dir /path/to/event_files \
+                            --output_dir /path/to/output \
+                            --folders_pkl /path/to/folders_list.pkl \
+                            --num_processes 10
+   ```
 
-2. **Time-Series Analysis**
-   ![Example Time-Series Plot](example_images/time_series.png)
+   - `--hfo_dir`: Directory containing HFO `.pkl` files.
+   - `--event_dir`: Directory containing event `.pkl` files.
+   - `--output_dir`: Directory where processed trial data will be saved.
+   - `--folders_pkl`: Path to the pickle file containing folder names.
+   - `--num_processes`: Number of parallel processes to use (default is the number of CPU cores).
 
-## Contribution
+3. **Example Command**:
+   ```bash
+   python hfo_processing.py --hfo_dir /home/sathwik/hfo_data \
+                            --event_dir /home/sathwik/event_data \
+                            --output_dir /home/sathwik/processed_trials \
+                            --folders_pkl /home/sathwik/folders_list.pkl \
+                            --num_processes 4
+   ```
 
-Contributions are welcome! If you'd like to improve the code or add new features:
-1. Fork the repository.
-2. Create a new branch for your feature/bugfix.
-3. Submit a pull request with a detailed explanation.
+## Output
 
-## License
+The output consists of:
+1. **Session-Specific Folders**: Created under the specified `--output_dir`.
+2. **Trial-Specific Files**: HFO data split into `.pkl` files corresponding to individual trials. These files are saved in folders named after the trial type.
 
-This project is licensed under the [MIT License](LICENSE).
+## Source of HFO Detections
+
+The HFO detections used in this pipeline are generated using the [epycom](https://github.com/ICRC-BME/epycom/) library. Please refer to their documentation for more details on how to obtain the detections.
 
 ## Acknowledgments
 
-Special thanks to the research community for providing tools and datasets that enable innovative brain activity analysis.
+- [epycom](https://github.com/ICRC-BME/epycom) for HFO detection.
+- Special thanks to the research community for providing detection algorithms and tools for data analysis.
+
+## License
+
+This repository is licensed under the [MIT License](LICENSE).
