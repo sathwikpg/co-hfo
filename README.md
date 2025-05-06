@@ -8,10 +8,8 @@ This repository provides a comprehensive pipeline for processing, analyzing, and
 - **HFO Event Processing**: Splits HFO data into trial-specific segments using event timing data.
 - **Parallel Processing**: Leverages multiprocessing for faster execution.
 - **Brain Map Visualization**: Plot and visualize brain activity using 3D coordinate data.
-- **Event Matching**: Identify matching files for encoding and recall trials based on common parts in filenames.
 - **Coincidence Detection**: Analyze temporal coincidences in event data across multiple channels.
 - **Statistical Analysis**: Perform correlation-based analyses and calculate significant and non-significant trends.
-- **ANOVA Testing**: Compute p-values for comparing different trial types using one-way ANOVA.
 - **Error Plots**: Generate plots with mean and standard error to compare HFO synchronization across trials.
 
 ---
@@ -74,7 +72,7 @@ python co_hfo_analysis.py --dataset /path/to/processed_trials \
 
 ### Key Functions
 - `plot_brain_map(coords, node_values, trial)`: Visualizes brain activity using 3D coordinates and node values.
-- `load_matching_files(encode_directory, recall_directory)`: Matches encoding and recall files based on filename patterns.
+- `load_matching_files(encode_directory, recall_directory)`: Load the encoding word files corresponding only to the words that were recalled.
 - `find_coincidences(data_array, time_window)`: Detects temporal coincidences in event data.
 - `process_folder(args)`: Processes HFO data for a given folder and trial type.
 - `generate_sig_trial(trial, folder_path)`: Generates and visualizes significant trends for a particular trial type.
@@ -106,19 +104,6 @@ You can install these using pip:
 ```bash
 pip install pandas numpy matplotlib seaborn nilearn statsmodels argparse mlxtend
 ```
-
----
-
-## Example Outputs
-
-1. **Brain Map Visualization**
-   ![Example Brain Map](example_images/brain_map.png)
-
-2. **Time-Series Analysis**
-   ![Example Time-Series Plot](example_images/time_series.png)
-
-3. **ANOVA p-values**
-   ![Example p-values Plot](example_images/p_values.png)
 
 ---
 
