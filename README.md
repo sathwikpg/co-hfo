@@ -43,7 +43,7 @@ The pipeline requires:
 ### Step 1: Folder Creation
 Run the script to create folders for each HFO file:
 ```bash
-python create_folders.py --pkl_file /path/to/files_list.pkl --output_dir /path/to/output/folder
+python create_word_events.py --pkl_file /path/to/files_list.pkl --output_dir /path/to/output/folder
 ```
 
 ### Step 2: HFO Processing
